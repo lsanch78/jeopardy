@@ -1,10 +1,11 @@
 <script>
 import CurrentQuestion from "./components/CurrentQuestion.vue"
 import QuestionColumn from "./components/QuestionColumn.vue"
+import PlayerScore from "./components/PlayerScore.vue"
 
 export default {
   name: 'App',
-  components: {CurrentQuestion, QuestionColumn},
+  components: {CurrentQuestion, QuestionColumn, PlayerScore},
 
   data() {
     return {
@@ -76,6 +77,10 @@ export default {
   </header>
 
   <main>
+    <div id="player-scoreboard">
+      <PlayerScore></PlayerScore>
+
+    </div>
     <div id="game-table">
       <QuestionColumn v-for="cat in categories"
                       :key="cat.id"

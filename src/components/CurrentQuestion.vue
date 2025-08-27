@@ -1,4 +1,11 @@
 <script>
+export default {
+  name: "CurrentQuestion",
+  props: {},
+  data() {},
+  methods: {}
+}
+
 
 </script>
 
