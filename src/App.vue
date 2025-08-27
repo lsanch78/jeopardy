@@ -8,7 +8,7 @@ export default {
 
   data() {
     return {
-      categories: [] // will hold the 4 picked categories
+      categories: [], // will hold the 4 picked categories
     }
   },
 
@@ -76,7 +76,6 @@ export default {
   </header>
 
   <main>
-    <CurrentQuestion></CurrentQuestion>
     <div id="game-table">
       <QuestionColumn v-for="cat in categories"
                       :key="cat.id"

@@ -6,16 +6,19 @@ export default {
   props: {
     category: {
       type: Object,
-      required: true
+      required: true,
+
     }
   },
   methods: {
     async getQuestion(difficulty, value) {
+
+
       if (this.waiting){
         console.warn("Wait 5 seconds before new question")
         return;
       }
-
+      this.activeQuestion = true;
       try {
         this.waiting = true;
 
@@ -27,7 +30,17 @@ export default {
 
         if (data.results && data.results.length > 0) {
           const question = data.results[0]
-          console.log(question.question)
+
+          this.activeValue = value;
+          this.$emit("update-active", true)
+
+          if (value === 200) this.easy1 = question.question
+          if (value === 400) this.easy2 = question.question
+          if (value === 600) this.medium1 = question.question
+          if (value === 800) this.medium2 = question.question
+          if (value === 1000) this.hard = question.question
+
+
           console.log("Correct Answer:", question.correct_answer)
         } else {
           console.warn("No question returned.")
@@ -43,6 +56,16 @@ export default {
         console.log("error fetching question: ", error)
       }
     }
+  },
+  data() {
+    return {
+      easy1: "$200",
+      easy2: "$400",
+      medium1: "$600",
+      medium2: "$800",
+      hard: "$1000",
+      activeQuestion: false
+    }
   }
 }
 </script>
@@ -53,20 +76,32 @@ export default {
     <div class="cell" id="subject-cell">
       <p>{{ category.name }}</p>
     </div>
+
     <div class="cell" id="easy-cell1" @click="getQuestion('easy', 200)">
-      <p>$200</p>
+      <p v-if="!activeQuestion">{{ easy1 }}</p>
+      <div v-else>
+        <p  v-html="easy1"></p>
+        <button @click.stop="checkAnswer('True')">True</button>
+        <button @click.stop="checkAnswer('False')">False</button>
+
+      </div>
     </div>
+
+
+
+
+
     <div class="cell" id="easy-cell2" @click="getQuestion('easy', 400)">
-      <p>$400</p>
+      <p>{{ easy2 }}</p>
     </div>
     <div class="cell" id="medium-cell1" @click="getQuestion('medium', 600)">
-      <p>$600</p>
+      <p>{{ medium1 }}</p>
     </div>
     <div class="cell" id="medium-cell2" @click="getQuestion('medium', 800)">
-      <p>$800</p>
+      <p>{{ medium2 }}</p>
     </div>
     <div class="cell" id="hard-cell"@click="getQuestion('medium', 1000)">
-      <p>$1000</p>
+      <p>{{ hard }}</p>
     </div>
 
   </div>
@@ -99,8 +134,12 @@ export default {
   color: yellow;
   font-size: 1.3rem;
   margin: 5px;
-  text-align: center;
   width: 270px;
+  height: 90px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cell:hover {
