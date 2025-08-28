@@ -36,6 +36,12 @@ export default {
       currentQuestion: null,
       currentValue: 0,
       currentGameStatus: "",
+      currentTurn: 0,
+      easy1: "$200",
+      easy2: "$400",
+      medium1: "$600",
+      medium2: "$800",
+      hard: "$1000",
     }
   },
 
@@ -125,19 +131,23 @@ export default {
     handleCurrentQuestion(question, value) {
       this.currentQuestion = question;
       this.currentValue = value;
-      console.log("What is the value: ", this.currentValue);
+      console.log("What is the value: ", this.currentQuestion);
+      this.currentGameStatus = `The category chosen is: ${this.currentQuestion.category}, at ${this.currentQuestion.difficulty} difficulty`
     },
 
     checkAnswer(proposed, value) {
       console.log("My choice", proposed)
       console.log(this.currentQuestion.correct_answer)
       if (this.currentQuestion.correct_answer === proposed) {
-        console.log("You got it right")
         this.awardPoints(value)
-        console.log("Add $" + this.currentValue)
+
+        this.currentValue = 0;
+        this.currentQuestion = null;
+        this.currentGameStatus = "CORRECT!"
+
       } else {
-        this.$emit("answered-wrong", value)
-        console.log("You got it wrong")
+        this.currentGameStatus = "INCORRECT!"
+
         this.activeQuestion = null
         this.currentValue = 0
         this.nextTurn()
@@ -179,8 +189,12 @@ export default {
       <QuestionColumn v-for="cat in categories"
                       :key="cat.id"
                       :category="cat"
-                      @answered-correct="awardPoints"
-                      @answered-wrong="nextTurn"
+                      :player="this.players[this.currentTurn]"
+                      :easy1="easy1"
+                      :easy2="easy2"
+                      :medium1="medium1"
+                      :medium2="medium2"
+                      :hard="hard"
                       @current-question="handleCurrentQuestion"
       />
     </div>
@@ -190,6 +204,10 @@ export default {
   <div class="question-box">
     <div v-if="currentQuestion">
     <h2 v-html="currentQuestion.question"></h2>
+      <br>
+    </div>
+    <div v-if="!currentQuestion">
+      <h2>{{ currentGameStatus }}</h2>
       <br>
     </div>
     <div class="buttons">

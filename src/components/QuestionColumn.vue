@@ -7,8 +7,16 @@ export default {
     category: {
       type: Object,
       required: true,
-
-    }
+    },
+    player: {
+      type: Object,
+      required: true,
+    },
+    easy1: String,
+    easy2: String,
+    medium1: String,
+    medium2: String,
+    hard: String
   },
   methods: {
     async getQuestion(difficulty, value) {
@@ -35,14 +43,8 @@ export default {
           // update currQ and currVal
           this.currentQuestion = data.results[0]
           this.currentValue = value;
+          console.log("I'm inside question column, this is the player: ", this.player.number)
           this.$emit("current-question", question, value)
-          //
-          // if (value === 200) this.easy1 = question.question
-          // if (value === 400) this.easy2 = question.question
-          // if (value === 600) this.medium1 = question.question
-          // if (value === 800) this.medium2 = question.question
-          // if (value === 1000) this.hard = question.question
-
 
           console.log("Correct Answer:", question.correct_answer)
         } else {
@@ -63,16 +65,9 @@ export default {
     },
 
 
-
-
   },
   data() {
     return {
-      easy1: "$200",
-      easy2: "$400",
-      medium1: "$600",
-      medium2: "$800",
-      hard: "$1000",
       activeQuestion: false,
       currentQuestion: null,
       currentValue: 0,
