@@ -35,12 +35,13 @@ export default {
           // update currQ and currVal
           this.currentQuestion = data.results[0]
           this.currentValue = value;
-
-          if (value === 200) this.easy1 = question.question
-          if (value === 400) this.easy2 = question.question
-          if (value === 600) this.medium1 = question.question
-          if (value === 800) this.medium2 = question.question
-          if (value === 1000) this.hard = question.question
+          this.$emit("current-question", question, value)
+          //
+          // if (value === 200) this.easy1 = question.question
+          // if (value === 400) this.easy2 = question.question
+          // if (value === 600) this.medium1 = question.question
+          // if (value === 800) this.medium2 = question.question
+          // if (value === 1000) this.hard = question.question
 
 
           console.log("Correct Answer:", question.correct_answer)
@@ -61,14 +62,7 @@ export default {
 
     },
 
-    checkAnswer(proposed) {
-      if (this.currentQuestion.correct_answer === proposed) {
-        console.log("You got it right")
-        console.log("Add $" + this.currentValue)
-      } else {
-        console.log("You got it wrong")
-      }
-    }
+
 
 
   },
@@ -95,15 +89,8 @@ export default {
     </div>
 
     <div class="cell" id="easy-cell1" @click="getQuestion('easy', 200)">
-      <h1 v-if="!activeQuestion">{{ easy1 }}</h1>
-      <div v-else>
-        <p v-html="easy1"></p>
-        <button @click.stop="checkAnswer('True')">True</button>
-        <button @click.stop="checkAnswer('False')">False</button>
-
-      </div>
+      <h1>{{ easy1 }}</h1>
     </div>
-
 
     <div class="cell" id="easy-cell2" @click="getQuestion('easy', 400)">
       <h1>{{ easy2 }}</h1>
@@ -114,7 +101,7 @@ export default {
     <div class="cell" id="medium-cell2" @click="getQuestion('medium', 800)">
       <h1>{{ medium2 }}</h1>
     </div>
-    <div class="cell" id="hard-cell" @click="getQuestion('medium', 1000)">
+    <div class="cell" id="hard-cell" @click="getQuestion('hard', 1000)">
       <h1>{{ hard }}</h1>
     </div>
 
@@ -147,7 +134,7 @@ p {
 
 .cell {
   border: 3px solid midnightblue;
-  padding: 30px;
+  padding: 15px;
   background-color: darkblue;
   color: yellow;
   font-size: 1.3rem;
@@ -164,5 +151,21 @@ p {
   box-shadow: 0px 0px 7px yellow;
   cursor: pointer;
 }
+
+
+.question-box {
+  display: flex;
+  align-items: center;
+  margin: -50px auto 0px auto;
+  padding: 30px;
+  background-color: darkblue;
+  color: yellow;
+  font-size: 1.3rem;
+  text-align: center;
+  width: 70%;
+  height: 100%;
+  justify-content: center;
+}
+
 
 </style>

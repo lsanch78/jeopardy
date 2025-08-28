@@ -1,5 +1,4 @@
 <script>
-import CurrentQuestion from "./components/CurrentQuestion.vue"
 import QuestionColumn from "./components/QuestionColumn.vue"
 import PlayerScore from "./components/PlayerScore.vue"
 
@@ -29,11 +28,14 @@ const endOfGame = false;
 
 export default {
   name: 'App',
-  components: {CurrentQuestion, QuestionColumn, PlayerScore},
+  components: {QuestionColumn, PlayerScore},
   data() {
     return {
       categories: [], // 4 random picked categories
       players: [], // number of players
+      currentQuestion: null,
+      currentValue: 0,
+      currentGameStatus: "",
     }
   },
 
@@ -46,7 +48,7 @@ export default {
       // set first turn
       this.currentTurn = 0
       this.players[this.currentTurn].active = true
-      console.log(`Game start — Player ${this.currentTurn + 1}'s turn`)
+      this.currentGameStatus = `Game start — Player ${this.currentTurn + 1}'s turn`
     },
 
     nextTurn(){
@@ -61,7 +63,7 @@ export default {
       }
 
       this.players[this.currentTurn].active = true;
-      console.log(`It is Player ${this.currentTurn + 1}'s turn`)
+      this.currentGameStatus = `Player ${this.currentTurn + 1}'s turn`
     },
 
     numberOfPlayers(numOfPlayers = 3) {
@@ -114,6 +116,33 @@ export default {
         console.error(error.message)
       }
     },
+    awardPoints(value) {
+      const currentPlayer = this.players[this.currentTurn]
+      currentPlayer.addScore(value)
+      this.nextTurn()
+    },
+
+    handleCurrentQuestion(question, value) {
+      this.currentQuestion = question;
+      this.currentValue = value;
+      console.log("What is the value: ", this.currentValue);
+    },
+
+    checkAnswer(proposed, value) {
+      console.log("My choice", proposed)
+      console.log(this.currentQuestion.correct_answer)
+      if (this.currentQuestion.correct_answer === proposed) {
+        console.log("You got it right")
+        this.awardPoints(value)
+        console.log("Add $" + this.currentValue)
+      } else {
+        this.$emit("answered-wrong", value)
+        console.log("You got it wrong")
+        this.activeQuestion = null
+        this.currentValue = 0
+        this.nextTurn()
+      }
+    }
 
 
 
@@ -136,20 +165,43 @@ export default {
 
   </header>
 
-  <main>
+
     <div id="player-scoreboard">
       <PlayerScore v-for="player in players"
                     :key="player.number"
                     :player="player"
       />
     </div>
+      <div id="game-status">
+        <h2>{{ currentGameStatus }}</h2>
+      </div>
     <div id="game-table">
       <QuestionColumn v-for="cat in categories"
                       :key="cat.id"
-                      :category="cat">
-      </QuestionColumn>
+                      :category="cat"
+                      @answered-correct="awardPoints"
+                      @answered-wrong="nextTurn"
+                      @current-question="handleCurrentQuestion"
+      />
     </div>
-  </main>
+
+<!--  Current Question -->
+
+  <div class="question-box">
+    <div v-if="currentQuestion">
+    <h2 v-html="currentQuestion.question"></h2>
+      <br>
+    </div>
+    <div class="buttons">
+      <form class="select-choice">
+        <input type="button" value="true" @click="checkAnswer('True', currentValue)">
+        <input type="button" value="false" @click="checkAnswer('False', currentValue)">
+      </form>
+    </div>
+  </div>
+
+
+
 </template>
 
 <style>
@@ -158,7 +210,7 @@ export default {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin: auto;
+  margin: -200px auto 0px auto;
   height: 100vh;
 }
 
@@ -175,10 +227,39 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+#game-status {
+  font-weight: bold;
+  margin-top: 50px;
+  margin-bottom: -120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: yellow;
+}
+
 body {
   padding: 0;
   margin: 0;
   background-color: black;
 }
 
+.question-box {
+  margin-top: -200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.buttons input[type="button"] {
+  margin: 5px;
+  font-weight: bold;
+  padding: 10px 20px;
+}
+
+.buttons input[type="button"]:hover {
+  cursor: pointer;
+  margin: 5px;
+  font-weight: bold;
+  padding: 10px 20px;
+}
 </style>
