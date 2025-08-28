@@ -9,21 +9,18 @@ class Player {
     this.active = false
   }
 
+
   addScore(val) {
     this.score += val
   }
 
-  startTurn() {
-    this.active = true
-  }
-
-  endTurn() {
-    this.active = false
-  }
-
 }
 
-const endOfGame = false;
+
+let endOfGame = false;
+var currentCategory;
+var currentCellKey;
+var questionsCompleted = 0;
 
 
 export default {
@@ -113,8 +110,22 @@ export default {
         const randomCategories = this.randomFourCategories()
 
         // pick the 4 objects by ID
-        this.categories = randomCategories.map(
-            id => data.trivia_categories.find(cat => cat.id === id)
+        this.categories = randomCategories.map(id => {
+         const baseCat = data.trivia_categories.find(cat => cat.id === id)
+
+
+         return {
+           ...baseCat,
+           cells: {
+             easy1: "$200",
+             easy2: "$400",
+             medium1: "$600",
+             medium2: "$800",
+             hard: "$1000"
+           }
+         }
+
+        }
         )
 
         console.log(this.categories)
@@ -125,7 +136,10 @@ export default {
     awardPoints(value) {
       const currentPlayer = this.players[this.currentTurn]
       currentPlayer.addScore(value)
-      this.nextTurn()
+
+      if (currentPlayer.score < 0) {
+        currentPlayer.score = 0
+      }
     },
 
     handleCurrentQuestion(question, value) {
@@ -135,29 +149,66 @@ export default {
       this.currentGameStatus = `The category chosen is: ${this.currentQuestion.category}, at ${this.currentQuestion.difficulty} difficulty`
     },
 
-    checkAnswer(proposed, value) {
-      console.log("My choice", proposed)
-      console.log(this.currentQuestion.correct_answer)
-      if (this.currentQuestion.correct_answer === proposed) {
+
+    handleAnswer({ categoryId, cellKey, correct }) {
+      currentCategory = categoryId
+      currentCellKey = cellKey
+      console.log(categoryId, cellKey, correct)
+      const cat = this.categories.find(c => c.id === categoryId)
+
+      if (cat) {
+        const color = correct ? "limegreen" : "red"
+        cat.cells[cellKey] =
+            `<span style="color:${color}">P${this.players[this.currentTurn].number}</span>`
+      }
+
+      if (correct === undefined){
+        cat.cells[cellKey] = `<span style="color:white">P${this.players[this.currentTurn].number}</span>`
+      }
+
+
+    },
+
+    async checkAnswer(proposed, value) {
+      const correct = this.currentQuestion.correct_answer === proposed
+      if (correct) {
         this.awardPoints(value)
-
-        this.currentValue = 0;
-        this.currentQuestion = null;
-        this.currentGameStatus = "CORRECT!"
-
+        this.currentGameStatus = "CORRECT! Choose another question!"
       } else {
-        this.currentGameStatus = "INCORRECT!"
+        this.awardPoints(-value)
+        this.currentGameStatus = "INCORRECT! Next player's turn"
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      }
 
-        this.activeQuestion = null
-        this.currentValue = 0
+
+      this.handleAnswer({
+        categoryId: currentCategory,
+        cellKey: currentCellKey,
+        correct: correct,
+      })
+
+      if (!correct) {
         this.nextTurn()
       }
+
+      questionsCompleted++;
+      console.log("Number of questions completed, need 20 for EOG", questionsCompleted)
+      this.checkEndGame(questionsCompleted);
+      this.currentValue = 0
+      this.currentQuestion = null
+    },
+
+    checkEndGame(questionsCompleted) {
+      console.log("questions needed to complete game: ", this.categories.length * 5)
+      if (questionsCompleted === (this.categories.length * 5)) {
+        const winner = this.players.reduce((max, player) => {
+          return player.score > max.score ? player : max
+        }, this.players[0])
+
+        this.currentGameStatus = `Player ${winner.number} has won the game!`
+        console.log("Game is Over")
+      }
     }
-
-
-
-
-
   },
 
   mounted() {
@@ -190,11 +241,7 @@ export default {
                       :key="cat.id"
                       :category="cat"
                       :player="this.players[this.currentTurn]"
-                      :easy1="easy1"
-                      :easy2="easy2"
-                      :medium1="medium1"
-                      :medium2="medium2"
-                      :hard="hard"
+                      @answered="handleAnswer"
                       @current-question="handleCurrentQuestion"
       />
     </div>

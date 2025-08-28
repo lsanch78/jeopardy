@@ -19,7 +19,7 @@ export default {
     hard: String
   },
   methods: {
-    async getQuestion(difficulty, value) {
+    async getQuestion(difficulty, value, cellKey) {
 
 
       if (this.waiting) {
@@ -43,8 +43,12 @@ export default {
           // update currQ and currVal
           this.currentQuestion = data.results[0]
           this.currentValue = value;
+
+
+          this.$emit("answered", { categoryId: this.category.id, cellKey });
           console.log("I'm inside question column, this is the player: ", this.player.number)
           this.$emit("current-question", question, value)
+
 
           console.log("Correct Answer:", question.correct_answer)
         } else {
@@ -83,21 +87,21 @@ export default {
       <h5>{{ category.name }}</h5>
     </div>
 
-    <div class="cell" id="easy-cell1" @click="getQuestion('easy', 200)">
-      <h1>{{ easy1 }}</h1>
+    <div class="cell" id="easy-cell1" @click="getQuestion('easy', 200, 'easy1')">
+      <h1 v-html="category.cells.easy1"></h1>
     </div>
 
-    <div class="cell" id="easy-cell2" @click="getQuestion('easy', 400)">
-      <h1>{{ easy2 }}</h1>
+    <div class="cell" id="easy-cell2" @click="getQuestion('easy', 400, 'easy2')">
+      <h1 v-html="category.cells.easy2"></h1>
     </div>
-    <div class="cell" id="medium-cell1" @click="getQuestion('medium', 600)">
-      <h1>{{ medium1 }}</h1>
+    <div class="cell" id="medium-cell1" @click="getQuestion('medium', 600, 'medium1')">
+      <h1 v-html="category.cells.medium1"></h1>
     </div>
-    <div class="cell" id="medium-cell2" @click="getQuestion('medium', 800)">
-      <h1>{{ medium2 }}</h1>
+    <div class="cell" id="medium-cell2" @click="getQuestion('medium', 800,'medium2')">
+      <h1 v-html="category.cells.medium2"></h1>
     </div>
-    <div class="cell" id="hard-cell" @click="getQuestion('hard', 1000)">
-      <h1>{{ hard }}</h1>
+    <div class="cell" id="hard-cell" @click="getQuestion('hard', 1000, 'hard')">
+      <h1 v-html="category.cells.hard"></h1>
     </div>
 
   </div>
