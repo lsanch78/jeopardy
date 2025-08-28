@@ -3,17 +3,74 @@ import CurrentQuestion from "./components/CurrentQuestion.vue"
 import QuestionColumn from "./components/QuestionColumn.vue"
 import PlayerScore from "./components/PlayerScore.vue"
 
+class Player {
+  constructor(number) {
+    this.number = number
+    this.score = 0
+    this.active = false
+  }
+
+  addScore(val) {
+    this.score += val
+  }
+
+  startTurn() {
+    this.active = true
+  }
+
+  endTurn() {
+    this.active = false
+  }
+
+}
+
+const endOfGame = false;
+
+
 export default {
   name: 'App',
   components: {CurrentQuestion, QuestionColumn, PlayerScore},
-
   data() {
     return {
-      categories: [], // will hold the 4 picked categories
+      categories: [], // 4 random picked categories
+      players: [], // number of players
     }
   },
 
   methods: {
+
+    startGame() {
+      // deactivate all first
+      this.players.forEach(p => (p.active = false))
+
+      // set first turn
+      this.currentTurn = 0
+      this.players[this.currentTurn].active = true
+      console.log(`Game start — Player ${this.currentTurn + 1}'s turn`)
+    },
+
+    nextTurn(){
+      if (endOfGame) return
+
+      this.players.forEach(p => (p.active = false))
+
+      this.currentTurn++
+      if (this.currentTurn >= this.players.length) {
+        console.log("Looping back to player 1")
+        this.currentTurn = 0
+      }
+
+      this.players[this.currentTurn].active = true;
+      console.log(`It is Player ${this.currentTurn + 1}'s turn`)
+    },
+
+    numberOfPlayers(numOfPlayers = 3) {
+      for (let i = 0; i < numOfPlayers; i++) {
+        this.players.push(new Player(i + 1))
+      }
+    },
+
+
     randomFourCategories() {
       const min = 9
       const max = 32
@@ -66,6 +123,9 @@ export default {
 
   mounted() {
     this.getCategories()
+    this.numberOfPlayers(3)
+    this.startGame()
+    console.log("Array of Players =", this.players)
   }
 }
 </script>
@@ -78,8 +138,10 @@ export default {
 
   <main>
     <div id="player-scoreboard">
-      <PlayerScore></PlayerScore>
-
+      <PlayerScore v-for="player in players"
+                    :key="player.number"
+                    :player="player"
+      />
     </div>
     <div id="game-table">
       <QuestionColumn v-for="cat in categories"
@@ -105,7 +167,15 @@ body {
   padding: 0;
 }
 
-main {
+#player-scoreboard {
+  margin-top: 30px;
+  margin-bottom: -50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+body {
   padding: 0;
   margin: 0;
   background-color: black;

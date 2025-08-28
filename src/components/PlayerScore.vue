@@ -2,6 +2,10 @@
 export default {
   name: "PlayerScore",
   props: {
+    player: {
+      type: Object,
+      required: true
+    }
   },
   data() {
     return {
@@ -15,7 +19,7 @@ export default {
 
 <template>
 <div class="wrapper">
-  <p>Player {{ playerNum }}: ${{ score }}</p>
+  <p>Player {{ player.number }}: ${{ player.score }}</p>
   </div>
 </template>
 
@@ -32,5 +36,6 @@ export default {
   border: 1px solid blue;
   width: 200px;
 }
+
 
 </style>
