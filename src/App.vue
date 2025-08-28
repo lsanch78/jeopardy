@@ -43,7 +43,9 @@ export default {
       hard: "$1000",
       gameIsSet: false,
       selectedPlayers: 2,
-      selectedCategories: 4
+      selectedCategories: 4,
+      doubleJeopardyWager: false,
+      wager: 0
     }
   },
 
@@ -152,8 +154,22 @@ export default {
     handleCurrentQuestion(question, value) {
       this.currentQuestion = question
       this.currentValue = value
+
+      if (Math.random() < 0.1) {
+        this.currentGameStatus = `!!DOUBLE JEOPARDY!! The category chosen is: ${this.currentQuestion.category}, at ${this.currentQuestion.difficulty} difficulty`
+        const currentPlayer = this.players[this.currentTurn]
+
+        if (currentPlayer.score < value) {
+          this.currentValue = value * 2
+        }else {
+          console.log("Implement Double Jeopardy Wager Prompt")
+          this.doubleJeopardyWager = true;
+        }
+      } else {this.currentGameStatus = `The category chosen is: ${this.currentQuestion.category}, at ${this.currentQuestion.difficulty} difficulty`}
+
+
       this.activeQuestion = true
-      this.currentGameStatus = `The category chosen is: ${this.currentQuestion.category}, at ${this.currentQuestion.difficulty} difficulty`
+
     },
 
 
@@ -199,7 +215,6 @@ export default {
       }
 
       questionsCompleted++;
-      console.log("Number of questions completed, need 20 for EOG", questionsCompleted)
       this.checkEndGame(questionsCompleted);
       this.currentValue = 0
       this.currentQuestion = null
@@ -224,13 +239,25 @@ export default {
       this.getCategories(this.selectedCategories)
       this.numberOfPlayers(this.selectedPlayers)
       this.gameIsSet = true
+      this.startGame()
+    },
 
-    }
+    submitWager() {
+      console.log("Player wagered:", this.wager)
+      const currentPlayer = this.players[this.currentTurn]
+      if (this.wager <= 0 || this.wager > currentPlayer.score) {
+        this.currentGameStatus = "Wager Must Be Less Than Your Score and Greater Than Zero"
+      } else {
+        this.currentGameStatus = `Wager accepted: $${this.wager}`
+        this.currentValue = this.wager
+        this.doubleJeopardyWager = false
+      }
+    },
 
   },
 
   mounted() {
-    this.startGame()
+
     console.log("Array of Players =", this.players)
   }
 }
@@ -274,7 +301,7 @@ export default {
       />
     </div>
       <div id="game-status">
-        <h2>{{ currentGameStatus }}</h2>
+        <h2 v-html="currentGameStatus"></h2>
       </div>
     <div id="game-table">
       <QuestionColumn v-for="cat in categories"
@@ -289,8 +316,15 @@ export default {
 
 <!--  Current Question -->
 
-  <div class="question-box">
-    <div v-if="currentQuestion">
+  <div v-if="gameIsSet" class="question-box">
+    <div v-if="doubleJeopardyWager">
+        <form class="wager-input" @submit.prevent="submitWager">
+          <h2>Enter your wager: </h2>
+          <input type="number" v-model.number="wager">
+          <input type="submit" value="Submit">
+        </form>
+    </div>
+    <div v-if="currentQuestion && !doubleJeopardyWager">
     <h2 v-html="currentQuestion.question"></h2>
       <div class="buttons">
         <form class="select-choice">
@@ -319,6 +353,7 @@ export default {
   align-items: center;
   margin: -200px auto 0px auto;
   height: 100vh;
+  max-width: 90%
 }
 
 body {

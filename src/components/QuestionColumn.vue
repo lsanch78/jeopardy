@@ -108,10 +108,14 @@ export default {
 <style>
 
 
+
+
 .question-column {
   font-family: "Arial Black", "Arial", sans-serif;
   display: flex;
   flex-direction: column;
+  flex: 1;
+  min-width: 100px;
   padding: 10px;
 }
 
@@ -120,6 +124,13 @@ export default {
   font-weight: bold;
 }
 
+.cell h1 {
+  font-size: clamp(0.8rem, 2vw, 3rem);
+}
+
+.cell h5 {
+  font-size: clamp(0.4rem, 1vw, 2.5rem);
+}
 
 p {
   font-family: "Times New Roman", Times, serif;
@@ -134,14 +145,12 @@ p {
   color: yellow;
   font-size: 1.3rem;
   margin: 5px;
-  width: 200px;
   height: 40px;
-
+  flex: 1 1 auto;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
 .cell:hover {
   box-shadow: 0px 0px 7px yellow;
   cursor: pointer;
