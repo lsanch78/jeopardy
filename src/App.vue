@@ -18,9 +18,10 @@ class Player {
 
 
 let endOfGame = false;
-var currentCategory;
-var currentCellKey;
-var questionsCompleted = 0;
+let currentCategory;
+let currentCellKey;
+let questionsCompleted = 0;
+
 
 
 export default {
@@ -40,12 +41,17 @@ export default {
       medium1: "$600",
       medium2: "$800",
       hard: "$1000",
+      gameIsSet: false,
+      selectedPlayers: 2,
+      selectedCategories: 4
     }
   },
 
   methods: {
 
     startGame() {
+
+
       // deactivate all first
       this.players.forEach(p => (p.active = false))
 
@@ -77,7 +83,7 @@ export default {
     },
 
 
-    randomFourCategories() {
+    randomListOfCategories(amount) {
       const min = 9
       const max = 32
       const excluded = [10, 13, 21, 26, 27, 29, 30, 32]
@@ -95,10 +101,10 @@ export default {
         ;[allowed[i], allowed[j]] = [allowed[j], allowed[i]]
       }
 
-      return allowed.slice(0, 4)
+      return allowed.slice(0, amount)
     },
 
-    async getCategories() {
+    async getCategories(numberOfCategories = 4) {
       const categoriesURL = "https://opentdb.com/api_category.php"
 
       try {
@@ -108,7 +114,7 @@ export default {
         }
 
         const data = await response.json()
-        const randomCategories = this.randomFourCategories()
+        const randomCategories = this.randomListOfCategories(numberOfCategories)
 
         // pick the 4 objects by ID
         this.categories = randomCategories.map(id => {
@@ -210,12 +216,20 @@ export default {
         this.currentGameStatus = `Player ${winner.number} has won the game!`
         console.log("Game is Over")
       }
+    },
+
+    setGameUp(){
+      console.log("Players:", this.selectedPlayers)
+      console.log("Categories:", this.selectedCategories)
+      this.getCategories(this.selectedCategories)
+      this.numberOfPlayers(this.selectedPlayers)
+      this.gameIsSet = true
+
     }
+
   },
 
   mounted() {
-    this.getCategories()
-    this.numberOfPlayers(3)
     this.startGame()
     console.log("Array of Players =", this.players)
   }
@@ -228,6 +242,30 @@ export default {
 
   </header>
 
+  <div v-if="!gameIsSet" id="game-settings-wrapper">
+    <h1>Game Settings</h1>
+    <form id="game-settings" @submit.prevent="setGameUp">
+      <p>Number of Players</p>
+      <select v-model="selectedPlayers" id="num-of-players">
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+      </select>
+
+      <p>Number of Categories</p>
+      <select v-model="selectedCategories" id="num-of-categories">
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+      </select>
+      <br><br>
+      <input type="submit" value="Start New Game">
+    </form>
+  </div>
 
     <div id="player-scoreboard">
       <PlayerScore v-for="player in players"
@@ -330,5 +368,15 @@ body {
   margin: 5px;
   font-weight: bold;
   padding: 10px 20px;
+}
+
+#game-settings-wrapper {
+  border: 3px dashed white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }
 </style>
