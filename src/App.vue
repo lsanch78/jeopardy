@@ -34,6 +34,7 @@ export default {
       currentValue: 0,
       currentGameStatus: "",
       currentTurn: 0,
+      activeQuestion: false,
       easy1: "$200",
       easy2: "$400",
       medium1: "$600",
@@ -143,9 +144,9 @@ export default {
     },
 
     handleCurrentQuestion(question, value) {
-      this.currentQuestion = question;
-      this.currentValue = value;
-      console.log("What is the value: ", this.currentQuestion);
+      this.currentQuestion = question
+      this.currentValue = value
+      this.activeQuestion = true
       this.currentGameStatus = `The category chosen is: ${this.currentQuestion.category}, at ${this.currentQuestion.difficulty} difficulty`
     },
 
@@ -177,7 +178,7 @@ export default {
       } else {
         this.awardPoints(-value)
         this.currentGameStatus = "INCORRECT! Next player's turn"
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise(resolve => setTimeout(resolve, 1000));
       }
 
 
@@ -196,6 +197,7 @@ export default {
       this.checkEndGame(questionsCompleted);
       this.currentValue = 0
       this.currentQuestion = null
+      this.activeQuestion = false
     },
 
     checkEndGame(questionsCompleted) {
@@ -241,6 +243,7 @@ export default {
                       :key="cat.id"
                       :category="cat"
                       :player="this.players[this.currentTurn]"
+                      :activeQuestion="activeQuestion"
                       @answered="handleAnswer"
                       @current-question="handleCurrentQuestion"
       />
@@ -251,18 +254,19 @@ export default {
   <div class="question-box">
     <div v-if="currentQuestion">
     <h2 v-html="currentQuestion.question"></h2>
+      <div class="buttons">
+        <form class="select-choice">
+          <input type="button" value="true" @click="checkAnswer('True', currentValue)">
+          <input type="button" value="false" @click="checkAnswer('False', currentValue)">
+        </form>
+      </div>
       <br>
     </div>
     <div v-if="!currentQuestion">
       <h2>{{ currentGameStatus }}</h2>
       <br>
     </div>
-    <div class="buttons">
-      <form class="select-choice">
-        <input type="button" value="true" @click="checkAnswer('True', currentValue)">
-        <input type="button" value="false" @click="checkAnswer('False', currentValue)">
-      </form>
-    </div>
+
   </div>
 
 

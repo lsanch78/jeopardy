@@ -12,6 +12,7 @@ export default {
       type: Object,
       required: true,
     },
+    activeQuestion: Boolean,
     easy1: String,
     easy2: String,
     medium1: String,
@@ -20,18 +21,15 @@ export default {
   },
   methods: {
     async getQuestion(difficulty, value, cellKey) {
-
+    if (this.activeQuestion) return;
 
       if (this.waiting) {
         console.warn("Wait 5 seconds before new question")
         return;
       }
-      this.activeQuestion = true;
       try {
         this.waiting = true;
 
-        console.log("Category ID into URL is ", this.category.id)
-        console.log(difficulty)
         const url = `https://opentdb.com/api.php?amount=1&category=${this.category.id}&difficulty=${difficulty}&type=boolean`;
         const response = await fetch(url)
         const data = await response.json()
@@ -46,7 +44,6 @@ export default {
 
 
           this.$emit("answered", { categoryId: this.category.id, cellKey });
-          console.log("I'm inside question column, this is the player: ", this.player.number)
           this.$emit("current-question", question, value)
 
 
@@ -72,7 +69,6 @@ export default {
   },
   data() {
     return {
-      activeQuestion: false,
       currentQuestion: null,
       currentValue: 0,
     }
