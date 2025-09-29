@@ -15,11 +15,11 @@
 }
 
 .cell h1 {
-    font-size: clamp(3rem, 2vw, 3rem);
+    font-size: clamp(1rem, 3vw, 3rem);
 }
 
 .cell h5 {
-    font-size: clamp(1.8rem, 2vw, 3rem);
+    font-size: clamp(0.5rem, 1vw, 3rem);
 }
 
 
@@ -28,7 +28,7 @@
     padding: 15px;
     background-color: var(--color-blueviolet-dark);
     color: var(--color-yellow);
-    font-size: 1.3rem;
+    font-size: clamp(0.5rem, 2.5vw, 1.3rem);
     margin: 5px;
     height: 40px;
     flex: 1 1 auto;
@@ -48,7 +48,7 @@
     padding: 10px;
     background-color: var(--color-blueviolet);
     color: var(--color-white);
-    font-size: 1.3rem;
+    font-size: clamp(0.5rem, 2.5vw, 1.3rem);
     text-align: center;
     justify-content: center;
     border-radius: 15px;

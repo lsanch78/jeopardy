@@ -58,7 +58,6 @@ body {
     background: linear-gradient(270deg, blue, var(--color-yellow-light), var(--color-blueviolet), var(--color-yellow-bright), var(--color-yellow-light), var(--color-yellow));
     background-size: 1200% 1200%;
     -webkit-background-clip: text;
-    background-clip: text;
     animation: shimmer 10s linear infinite;
 }
 
@@ -76,10 +75,7 @@ body {
 
 #game-settings-wrapper {
     font-weight: bold;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    position: absolute;
+    margin-top: 2.5rem;
     padding: 45px;
     display: flex;
     flex-direction: column;
