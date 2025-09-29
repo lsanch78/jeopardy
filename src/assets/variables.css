@@ -1,0 +1,11 @@
+:root {
+  --color-yellow: #e6b800; /* modern, darker yellow */
+  --color-yellow-light: #ffe066;
+  --color-yellow-bright: #fff700;
+  --color-blueviolet: #7c3aed; /* modern blue violet */
+  --color-blueviolet-dark: #4b2178;
+  --color-bg: #181818;
+  --color-white: #fff;
+  --color-black: #000;
+}
+

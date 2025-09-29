@@ -271,7 +271,8 @@ export default {
   </header>
 
   <div v-if="!gameIsSet" id="game-settings-wrapper">
-    <h1>Game Settings</h1>
+    <h1 id="game-title">Jeopardy!</h1>
+    <h2>Game Settings</h2>
     <form id="game-settings" @submit.prevent="setGameUp">
       <p>Number of Players</p>
       <select v-model="selectedPlayers" id="num-of-players">
