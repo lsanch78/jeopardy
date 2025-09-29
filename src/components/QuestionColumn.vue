@@ -37,8 +37,6 @@ export default {
         if (data.results && data.results.length > 0) {
           const question = data.results[0]
 
-
-          // update currQ and currVal
           this.currentQuestion = data.results[0]
           this.currentValue = value;
 
@@ -105,71 +103,4 @@ export default {
 
 </template>
 
-<style>
 
-
-
-
-.question-column {
-  font-family: "Arial Black", "Arial", sans-serif;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-width: 100px;
-  padding: 10px;
-}
-
-#subject-cell {
-  color: white;
-  font-weight: bold;
-}
-
-.cell h1 {
-  font-size: clamp(0.8rem, 2vw, 3rem);
-}
-
-.cell h5 {
-  font-size: clamp(0.4rem, 1vw, 2.5rem);
-}
-
-p {
-  font-family: "Times New Roman", Times, serif;
-  font-size: 1rem;
-}
-
-
-.cell {
-  border: 3px solid midnightblue;
-  padding: 15px;
-  background-color: darkblue;
-  color: yellow;
-  font-size: 1.3rem;
-  margin: 5px;
-  height: 40px;
-  flex: 1 1 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.cell:hover {
-  box-shadow: 0px 0px 7px yellow;
-  cursor: pointer;
-}
-
-
-.question-box {
-  display: flex;
-  align-items: center;
-  margin: -50px auto 0px auto;
-  padding: 30px;
-  background-color: darkblue;
-  color: yellow;
-  font-size: 1.3rem;
-  text-align: center;
-  width: 70%;
-  height: 100%;
-  justify-content: center;
-}
-
-
-</style>

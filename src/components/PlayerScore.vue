@@ -1,4 +1,5 @@
 <script>
+import '../assets/main.css'
 export default {
   name: "PlayerScore",
   props: {
@@ -18,24 +19,7 @@ export default {
 </script>
 
 <template>
-<div class="wrapper">
+<div class="player-score-wrapper">
   <p>Player {{ player.number }}: ${{ player.score }}</p>
-  </div>
+</div>
 </template>
-
-<style>
-
-.wrapper {
-  display: flex;
-  font-family: "Arial Black", "Arial", sans-serif;
-  font-weight: bold;
-  color: violet;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid blue;
-  width: 200px;
-}
-
-
-</style>
