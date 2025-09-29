@@ -1,4 +1,5 @@
 <script>
+import './App.css'
 import QuestionColumn from "./components/QuestionColumn.vue"
 import PlayerScore from "./components/PlayerScore.vue"
 
@@ -344,74 +345,3 @@ export default {
 
 
 </template>
-
-<style>
-#game-table {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  margin: -200px auto 0px auto;
-  height: 100vh;
-  max-width: 90%
-}
-
-body {
-  margin: 0;
-  padding: 0;
-}
-
-#player-scoreboard {
-  margin-top: 30px;
-  margin-bottom: -50px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-
-#game-status {
-  font-weight: bold;
-  margin-top: 50px;
-  margin-bottom: -120px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: yellow;
-}
-
-body {
-  padding: 0;
-  margin: 0;
-  background-color: black;
-}
-
-.question-box {
-  margin-top: -200px;
-  display: flex;
-  flex-direction: column;
-}
-
-.buttons input[type="button"] {
-  margin: 5px;
-  font-weight: bold;
-  padding: 10px 20px;
-}
-
-.buttons input[type="button"]:hover {
-  cursor: pointer;
-  margin: 5px;
-  font-weight: bold;
-  padding: 10px 20px;
-}
-
-#game-settings-wrapper {
-  border: 3px dashed white;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: white;
-}
-</style>
