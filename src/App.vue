@@ -24,7 +24,6 @@ let currentCellKey;
 let questionsCompleted = 0;
 
 
-
 export default {
   name: 'App',
   components: {QuestionColumn, PlayerScore},
@@ -64,7 +63,7 @@ export default {
       this.currentGameStatus = `Game start — Player ${this.currentTurn + 1}'s turn`
     },
 
-    nextTurn(){
+    nextTurn() {
       if (endOfGame) return
 
       this.players.forEach(p => (p.active = false))
@@ -121,21 +120,21 @@ export default {
 
         // pick the 4 objects by ID
         this.categories = randomCategories.map(id => {
-         const baseCat = data.trivia_categories.find(cat => cat.id === id)
+              const baseCat = data.trivia_categories.find(cat => cat.id === id)
 
 
-         return {
-           ...baseCat,
-           cells: {
-             easy1: "$200",
-             easy2: "$400",
-             medium1: "$600",
-             medium2: "$800",
-             hard: "$1000"
-           }
-         }
+              return {
+                ...baseCat,
+                cells: {
+                  easy1: "$200",
+                  easy2: "$400",
+                  medium1: "$600",
+                  medium2: "$800",
+                  hard: "$1000"
+                }
+              }
 
-        }
+            }
         )
 
         console.log(this.categories)
@@ -157,16 +156,18 @@ export default {
       this.currentValue = value
 
       if (Math.random() < 0.1) {
-        this.currentGameStatus = `!!DOUBLE JEOPARDY!! The category chosen is: ${this.currentQuestion.category}, at ${this.currentQuestion.difficulty} difficulty`
+        this.currentGameStatus = `DOUBLE JEOPARDY! The category chosen is: ${this.currentQuestion.category}, at ${this.currentQuestion.difficulty} difficulty`
         const currentPlayer = this.players[this.currentTurn]
 
         if (currentPlayer.score < value) {
           this.currentValue = value * 2
-        }else {
+        } else {
           console.log("Implement Double Jeopardy Wager Prompt")
           this.doubleJeopardyWager = true;
         }
-      } else {this.currentGameStatus = `The category chosen is: ${this.currentQuestion.category}, at ${this.currentQuestion.difficulty} difficulty`}
+      } else {
+        this.currentGameStatus = `The category chosen is: ${this.currentQuestion.category}, at ${this.currentQuestion.difficulty} difficulty`
+      }
 
 
       this.activeQuestion = true
@@ -174,7 +175,7 @@ export default {
     },
 
 
-    handleAnswer({ categoryId, cellKey, correct }) {
+    handleAnswer({categoryId, cellKey, correct}) {
       currentCategory = categoryId
       currentCellKey = cellKey
       console.log(categoryId, cellKey, correct)
@@ -186,7 +187,7 @@ export default {
             `<span style="color:${color}">P${this.players[this.currentTurn].number}</span>`
       }
 
-      if (correct === undefined){
+      if (correct === undefined) {
         cat.cells[cellKey] = `<span style="color:white">P${this.players[this.currentTurn].number}</span>`
       }
 
@@ -234,7 +235,7 @@ export default {
       }
     },
 
-    setGameUp(){
+    setGameUp() {
       console.log("Players:", this.selectedPlayers)
       console.log("Categories:", this.selectedCategories)
       this.getCategories(this.selectedCategories)
@@ -265,46 +266,65 @@ export default {
 </script>
 
 <template>
-  <header>
+  <div id="app-main">
+    <h1 v-if= "!gameIsSet" id="game-title">Jeopardy!</h1>
+    <div v-if="!gameIsSet" id="game-settings-wrapper">
+      <h2>Game Settings</h2>
+      <form id="game-settings" @submit.prevent="setGameUp">
+        <p>Number of Players</p>
+        <select v-model="selectedPlayers" id="num-of-players">
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select>
 
-
-  </header>
-
-  <div v-if="!gameIsSet" id="game-settings-wrapper">
-    <h1 id="game-title">Jeopardy!</h1>
-    <h2>Game Settings</h2>
-    <form id="game-settings" @submit.prevent="setGameUp">
-      <p>Number of Players</p>
-      <select v-model="selectedPlayers" id="num-of-players">
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-      </select>
-
-      <p>Number of Categories</p>
-      <select v-model="selectedCategories" id="num-of-categories">
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-      </select>
-      <br><br>
-      <input type="submit" value="Start New Game">
-    </form>
-  </div>
-
+        <p>Number of Categories</p>
+        <select v-model="selectedCategories" id="num-of-categories">
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+        </select>
+        <br><br>
+        <input type="submit" value="Start New Game">
+      </form>
+    </div>
     <div id="player-scoreboard">
       <PlayerScore v-for="player in players"
-                    :key="player.number"
-                    :player="player"
+                   :key="player.number"
+                   :player="player"
       />
     </div>
-      <div id="game-status">
-        <h2 v-html="currentGameStatus"></h2>
+    <div v-if="gameIsSet" id="game-status">
+      <h2 v-html="currentGameStatus"></h2>
+    </div>
+    <div v-if="gameIsSet" class="question-box">
+      <div v-if="doubleJeopardyWager">
+        <form class="wager-input" @submit.prevent="submitWager">
+          <h2>Enter your wager: </h2>
+          <input type="number" v-model.number="wager">
+          <input type="submit" value="Submit">
+        </form>
       </div>
+      <div v-if="currentQuestion && !doubleJeopardyWager">
+        <h2 v-html="currentQuestion.question"></h2>
+        <div class="buttons">
+          <form class="select-choice">
+            <input type="button" value="false" @click="checkAnswer('False', currentValue)">
+            <input type="button" value="true" @click="checkAnswer('True', currentValue)">
+          </form>
+        </div>
+        <br>
+      </div>
+      <div v-if="!currentQuestion">
+        <h2>{{ currentGameStatus }}</h2>
+        <br>
+      </div>
+
+    </div>
     <div id="game-table">
       <QuestionColumn v-for="cat in categories"
                       :key="cat.id"
@@ -315,34 +335,7 @@ export default {
                       @current-question="handleCurrentQuestion"
       />
     </div>
-
-<!--  Current Question -->
-
-  <div v-if="gameIsSet" class="question-box">
-    <div v-if="doubleJeopardyWager">
-        <form class="wager-input" @submit.prevent="submitWager">
-          <h2>Enter your wager: </h2>
-          <input type="number" v-model.number="wager">
-          <input type="submit" value="Submit">
-        </form>
-    </div>
-    <div v-if="currentQuestion && !doubleJeopardyWager">
-    <h2 v-html="currentQuestion.question"></h2>
-      <div class="buttons">
-        <form class="select-choice">
-          <input type="button" value="true" @click="checkAnswer('True', currentValue)">
-          <input type="button" value="false" @click="checkAnswer('False', currentValue)">
-        </form>
-      </div>
-      <br>
-    </div>
-    <div v-if="!currentQuestion">
-      <h2>{{ currentGameStatus }}</h2>
-      <br>
-    </div>
-
   </div>
-
 
 
 </template>

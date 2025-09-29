@@ -1,66 +1,108 @@
-/* Styles for QuestionColumn.vue */
+/* Component and UI styles only. No global layout or structure rules here. */
+
 .question-column {
-  font-family: "Arial Black", "Arial", sans-serif;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-width: 100px;
-  padding: 10px;
-}
-#subject-cell {
-  color: white;
-  font-weight: bold;
-}
-.cell h1 {
-  font-size: clamp(0.8rem, 2vw, 3rem);
-}
-.cell h5 {
-  font-size: clamp(0.4rem, 1vw, 2.5rem);
-}
-p {
-  font-family: "Times New Roman", Times, serif;
-  font-size: 1rem;
-}
-.cell {
-  border: 3px solid midnightblue;
-  padding: 15px;
-  background-color: darkblue;
-  color: yellow;
-  font-size: 1.3rem;
-  margin: 5px;
-  height: 40px;
-  flex: 1 1 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.cell:hover {
-  box-shadow: 0px 0px 7px yellow;
-  cursor: pointer;
-}
-.question-box {
-  display: flex;
-  align-items: center;
-  margin: -50px auto 0px auto;
-  padding: 30px;
-  background-color: darkblue;
-  color: yellow;
-  font-size: 1.3rem;
-  text-align: center;
-  width: 70%;
-  height: 100%;
-  justify-content: center;
+    font-family: var(--font-main), serif;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 100px;
+    padding: 10px;
 }
 
-/* Styles for PlayerScore.vue */
-.wrapper {
-  display: flex;
-  font-family: "Arial Black", "Arial", sans-serif;
-  font-weight: bold;
-  color: violet;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid blue;
-  width: 200px;
+#subject-cell {
+    color: var(--color-white);
+    font-weight: bold;
+}
+
+.cell h1 {
+    font-size: clamp(3rem, 2vw, 3rem);
+}
+
+.cell h5 {
+    font-size: clamp(1.8rem, 2vw, 3rem);
+}
+
+
+.cell {
+    border: 3px solid var(--color-blueviolet);
+    padding: 15px;
+    background-color: var(--color-blueviolet-dark);
+    color: var(--color-yellow);
+    font-size: 1.3rem;
+    margin: 5px;
+    height: 40px;
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cell:hover {
+    box-shadow: 0 0 7px var(--color-yellow);
+    cursor: pointer;
+}
+
+.question-box {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: var(--color-blueviolet);
+    color: var(--color-white);
+    font-size: 1.3rem;
+    text-align: center;
+    justify-content: center;
+    border-radius: 15px;
+}
+
+.question-box .buttons input[type="button"] {
+    border: none;
+    border-radius: 999px;
+    padding: 12px 32px;
+    margin: 8px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+    transition: background 0.2s, box-shadow 0.2s, filter 0.2s;
+    color: #fff;
+    cursor: pointer;
+    outline: none;
+    min-width: 120px;
+    min-height: 48px;
+}
+
+.question-box .buttons input[type="button"][value="true"] {
+    background: linear-gradient(90deg, #10b945 0%, #10B945FF 100%);
+}
+
+.question-box .buttons input[type="button"][value="false"] {
+    background: linear-gradient(90deg, #ff5858 0%, #ff5858 100%);
+}
+
+.question-box .buttons input[type="button"]:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+    filter: brightness(1.08);
+}
+
+.question-box .buttons input[type="button"]:active {
+    filter: brightness(0.95);
+}
+
+.player-score-wrapper {
+    display: flex;
+    font-size: 1rem;
+    font-family: var(--font-main), serif;
+    font-weight: bold;
+    color: var(--color-blueviolet);
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--color-blueviolet);
+    width: 200px;
+}
+
+#game-status {
+    font-size: 0.7rem;
+    color: var(--color-white);
+    font-family: var(--font-main), serif;
+    font-weight: 10;
 }

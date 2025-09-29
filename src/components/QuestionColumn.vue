@@ -37,8 +37,6 @@ export default {
         if (data.results && data.results.length > 0) {
           const question = data.results[0]
 
-
-          // update currQ and currVal
           this.currentQuestion = data.results[0]
           this.currentValue = value;
 
@@ -104,3 +102,5 @@ export default {
 
 
 </template>
+
+

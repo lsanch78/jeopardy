@@ -4,8 +4,8 @@
   --color-yellow-bright: #fff700;
   --color-blueviolet: #7c3aed;
   --color-blueviolet-dark: #4b2178;
-  --color-bg: #181818;
+  --color-bg: #101010FF;
   --color-white: #FFF4DBFF;
   --color-black: #000;
+  --font-main: 'Inter', 'Roboto', Arial, sans-serif;
 }
-

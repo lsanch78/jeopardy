@@ -1,4 +1,5 @@
 <script>
+import '../assets/main.css'
 export default {
   name: "PlayerScore",
   props: {
@@ -18,7 +19,7 @@ export default {
 </script>
 
 <template>
-<div class="wrapper">
+<div class="player-score-wrapper">
   <p>Player {{ player.number }}: ${{ player.score }}</p>
-  </div>
+</div>
 </template>
