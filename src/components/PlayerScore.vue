@@ -22,20 +22,3 @@ export default {
   <p>Player {{ player.number }}: ${{ player.score }}</p>
   </div>
 </template>
-
-<style>
-
-.wrapper {
-  display: flex;
-  font-family: "Arial Black", "Arial", sans-serif;
-  font-weight: bold;
-  color: violet;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid blue;
-  width: 200px;
-}
-
-
-</style>
