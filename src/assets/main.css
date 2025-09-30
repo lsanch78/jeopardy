@@ -44,8 +44,6 @@
 .question-box {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     padding: 10px;
     background: linear-gradient(270deg, var(--color-yellow), var(--color-yellow-light), var(--color-yellow-bright), var(--color-yellow));
     background-size: 600% 600%;
@@ -120,16 +118,15 @@
 .player-score-wrapper.current-player {
     background: var(--color-green);
     box-shadow: 0 0 3px var(--color-green);
-    animation: currentPlayerPulse 1s infinite alternate;
+    animation: currentPlayerFlash 1s steps(1, end) infinite;
 }
 
-@keyframes currentPlayerPulse {
+@keyframes currentPlayerFlash {
+    0%, 49% {
     0% {
-        background: var(--color-green);
-    }
+    50%, 100% {
+        background: #00af33;
     100% {
-        background: #009a2a; /* lighter green, adjust as needed */
-    }
 }
 
 #game-status {
