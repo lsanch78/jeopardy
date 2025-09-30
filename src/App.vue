@@ -84,7 +84,6 @@ export default {
       }
     },
 
-
     randomListOfCategories(amount) {
       const min = 9
       const max = 32
@@ -142,6 +141,7 @@ export default {
         console.error(error.message)
       }
     },
+
     awardPoints(value) {
       const currentPlayer = this.players[this.currentTurn]
       currentPlayer.addScore(value)
@@ -155,7 +155,7 @@ export default {
       this.currentQuestion = question
       this.currentValue = value
 
-      if (Math.random() < 0.1) {
+      if (Math.random() < .2) {
         this.currentGameStatus = `DOUBLE JEOPARDY! The category chosen is: ${this.currentQuestion.category}, at ${this.currentQuestion.difficulty} difficulty`
         const currentPlayer = this.players[this.currentTurn]
 
@@ -173,7 +173,6 @@ export default {
       this.activeQuestion = true
 
     },
-
 
     handleAnswer({categoryId, cellKey, correct}) {
       currentCategory = categoryId
@@ -202,9 +201,13 @@ export default {
       } else {
         this.awardPoints(-value)
         this.currentGameStatus = "INCORRECT! Next player's turn"
-        await new Promise(resolve => setTimeout(resolve, 1000));
       }
 
+      // Show status message in question area, then delay
+      this.currentValue = 0
+      this.currentQuestion = null
+      this.activeQuestion = false
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       this.handleAnswer({
         categoryId: currentCategory,
@@ -218,9 +221,6 @@ export default {
 
       questionsCompleted++;
       this.checkEndGame(questionsCompleted);
-      this.currentValue = 0
-      this.currentQuestion = null
-      this.activeQuestion = false
     },
 
     checkEndGame(questionsCompleted) {
@@ -267,6 +267,7 @@ export default {
 
 <template>
   <div id="app-main">
+<!--Game Title and Settings-->
     <h1 v-if= "!gameIsSet" id="game-title">Jeopardy!</h1>
     <div v-if="!gameIsSet" id="game-settings-wrapper">
       <h2>Game Settings</h2>
@@ -292,18 +293,22 @@ export default {
         <input type="submit" value="Start New Game">
       </form>
     </div>
-    <div id="player-scoreboard">
+
+<!--Active Game UI-->
+    <div v-if="gameIsSet"  id="player-scoreboard">
       <PlayerScore v-for="player in players"
                    :key="player.number"
                    :player="player"
+                   :isCurrent="player.number === players[currentTurn].number"
       />
     </div>
-    <div v-if="gameIsSet" id="game-status">
-      <h2 v-html="currentGameStatus"></h2>
-    </div>
+<!--    <div v-if="gameIsSet" id="game-status">-->
+<!--      <h2 v-html="currentGameStatus"></h2>-->
+<!--    </div>-->
     <div v-if="gameIsSet" class="question-box">
       <div v-if="doubleJeopardyWager">
         <form class="wager-input" @submit.prevent="submitWager">
+          <h1>DOUBLE JEOPARDY!</h1>
           <h2>Enter your wager: </h2>
           <input type="number" v-model.number="wager">
           <input type="submit" value="Submit">
