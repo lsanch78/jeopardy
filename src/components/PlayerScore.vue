@@ -6,6 +6,10 @@ export default {
     player: {
       type: Object,
       required: true
+    },
+    isCurrent: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -19,7 +23,7 @@ export default {
 </script>
 
 <template>
-<div class="player-score-wrapper">
+<div class="player-score-wrapper" :class="{ 'current-player': isCurrent }">
   <p>Player {{ player.number }}: ${{ player.score }}</p>
 </div>
 </template>
