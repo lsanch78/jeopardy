@@ -9,6 +9,7 @@
     overflow: hidden;
     padding: 5px;
     box-sizing: border-box;
+    perspective: 800px;
 }
 
 #game-table {
@@ -51,14 +52,15 @@ body {
 }
 
 #game-title {
+    display: flex;
+    justify-content: center;
     font-weight: bold;
-    color: transparent;
+    color: var(--color-gold);
+    text-shadow: 0 5px 8px var(--color-black);
     text-align: center;
     font-size: clamp(2.5rem, 15vw, 8rem);
-    background: linear-gradient(270deg, blue, var(--color-gold-light), var(--color-blue), var(--color-gold-bright), var(--color-gold-light), var(--color-gold));
-    background-size: 1200% 1200%;
-    -webkit-background-clip: text;
-    animation: shimmer 10s linear infinite;
+    animation: fallInZ 0.78s cubic-bezier(.17,.67,.83,.67) 0s 1;
+    transform-style: preserve-3d;
 }
 
 @keyframes shimmer {
@@ -73,16 +75,31 @@ body {
     }
 }
 
+@keyframes fallInZ {
+    0% {
+        opacity: 0;
+        transform: translateZ(400px) scale(2) rotateX(-40deg);
+    }
+    60% {
+        opacity: 1;
+        transform: translateZ(-40px) scale(1.05) rotateX(8deg);
+    }
+    80% {
+        transform: translateZ(0px) scale(1.02) rotateX(-2deg);
+    }
+    100% {
+        opacity: 1;
+        transform: translateZ(0px) scale(1) rotateX(0deg);
+    }
+}
+
 #game-settings-wrapper {
     font-weight: bold;
-    margin-top: 2.5rem;
-    padding: 45px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     color: var(--color-white);
-    min-width: 300px;
     border-radius: 50px;
 }
 

@@ -1,9 +1,9 @@
 :root {
-  --color-gold: #ffd700; /* Jeopardy gold */
-  --color-gold-light: #ffe324; /* light gold */
+  --color-gold: #d4af37; /* Jeopardy gold */
+  --color-gold-light: #ffba39; /* light gold */
   --color-gold-bright: #ffe37b; /* bright gold */
   --color-blue: #1a237e; /* Jeopardy blue */
-  --color-blue-dark: #283593; /* accent blue */
+  --color-blue-dark: #223083; /* accent blue */
   --color-green: #43a047; /* correct answer green */
   --color-bg: #030c67; /* main background blue */
   --color-white: #ffffff;
