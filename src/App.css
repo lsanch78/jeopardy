@@ -24,12 +24,14 @@
     overflow-y: hidden;
 }
 
-body {
+body,html {
     margin: 0;
     padding: 0;
     font-family: var(--font-main), serif;
     background: var(--color-bg);
     color: var(--color-white);
+    -webkit-font-smoothing: antialiased;
+    overflow-y: hidden;
 }
 
 #player-scoreboard {
