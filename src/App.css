@@ -7,20 +7,20 @@
     height: 100vh;
     width: 100vw;
     overflow: hidden;
-    padding: 25px;
+    padding: 5px;
     box-sizing: border-box;
 }
 
 #game-table {
-    flex: 1 1 0;
+    flex: 1 1 auto;
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    align-items: stretch;
+    justify-items: center;
     margin: 0;
     min-height: 0;
     max-width: 100vw;
     overflow-x: auto;
+    overflow-y: hidden;
 }
 
 body {
@@ -55,7 +55,7 @@ body {
     color: transparent;
     text-align: center;
     font-size: clamp(2.5rem, 15vw, 8rem);
-    background: linear-gradient(270deg, blue, var(--color-yellow-light), var(--color-blueviolet), var(--color-yellow-bright), var(--color-yellow-light), var(--color-yellow));
+    background: linear-gradient(270deg, blue, var(--color-gold-light), var(--color-blue), var(--color-gold-bright), var(--color-gold-light), var(--color-gold));
     background-size: 1200% 1200%;
     -webkit-background-clip: text;
     animation: shimmer 10s linear infinite;
@@ -103,7 +103,7 @@ body {
     padding: 15px 20px;
     border-radius: 8px;
     border: none;
-    background: var(--color-yellow);
+    background: var(--color-gold);
     color: var(--color-black);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
     transition: box-shadow 0.2s, background 0.2s;
@@ -112,7 +112,7 @@ body {
 
 #game-settings-wrapper input:hover {
     cursor: pointer;
-    background: var(--color-blueviolet);
+    background: var(--color-blue);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
