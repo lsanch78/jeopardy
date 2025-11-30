@@ -1,4 +1,4 @@
-# 🎲 Jeopardy! – Trivia Game
+# Jeopardy! – Trivia Game
 
 A browser-based multiplayer Jeopardy game built with Vue. Players compete by answering **True/False trivia questions** pulled dynamically from the [OpenTDB API](https://opentdb.com/).  
 
@@ -6,7 +6,7 @@ A browser-based multiplayer Jeopardy game built with Vue. Players compete by ans
 
 ---
 
-## ✨ Features
+## Features
 - 🎮 **Players**: 2–6 players supported.  
 - 📚 **Categories**: Choose 4–8 trivia categories each game.  
 - ✅ **True/False Questions**: Unique questions fetched live from the Trivia API.  
@@ -47,7 +47,7 @@ A browser-based multiplayer Jeopardy game built with Vue. Players compete by ans
 
 ---
 
-## 🛠️ Tech Stack
+##Tech Stack
 - **Vue.js** frontend framework  
 - **HTML5 / CSS3** UI & styling  
 - **JavaScript** game logic  
